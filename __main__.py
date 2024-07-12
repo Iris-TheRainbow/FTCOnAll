@@ -4,4 +4,7 @@ import os
 
 args = sys.argv
 
-scripts.gradle.sdksetup()
+if args[1] == 'setup':
+    scripts.gradle.setup()
+elif args[2] == 'sync':
+    scripts.gradle.sync()
