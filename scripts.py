@@ -22,24 +22,18 @@ class android:
         print('Installing Android SDK')
         sdkmanager.build_package_list(use_net=False)
         sdkmanager.install("platforms;android-29", sdkdir)
+        print('Installing Platform Tools')
+        sdkmanager.install("platform-tools", sdkdir)
 
         print('Please accept the Android SDK licenses')
         sdkmanager.licenses()
 
     @staticmethod
-    def adbsetup(confpath, datadir, sdkdir):
-        print('Installing Platform Tools')
-        sdkmanager.build_package_list(use_net=False)
-        sdkmanager.install("platform-tools", sdkdir)
-        sdkmanager.build_package_list(use_net=False)
-        sdkmanager.install("platform-tools", sdkdir)
-
-    @staticmethod
     def setup(confpath, datadir, sdkdir):
         android.sdksetup(confpath, datadir)
-        android.adbsetup(confpath, datadir, sdkdir)
-        android.init(sdkdir)
+        gradle.init(sdkdir)
 
+class gradle:
     @staticmethod
     def init(sdkdir):
         if os.path.exists('gradlew'):
@@ -48,3 +42,27 @@ class android:
                     f.write('sdkdir=' + sdkdir)
         else:
             print('Please navigate to your FTC project and run \'ftc init\'')
+
+    @staticmethod
+    def sync():
+        os.system('./gradlew --stop')
+        os.system('./gradlew')
+
+    @staticmethod
+    def build():
+        os.system('./gradlew build')
+
+    @staticmethod
+    def run(sdkdir):
+        os.system('./gradlew build')
+        os.system(sdkdir + '/platform-tools/adb install TeamCode/build/outputs/apk/releases/TeamCode-release.apk')
+
+class adb:
+    @staticmethod
+    def connect(device, sdkdir):
+        ip = ''
+        if device == 'chub':
+            ip = '192.168.43.1'
+        else:
+            ip = '192.168.48.1'
+        os.system(sdkdir + '/platform-tools/adb connect ' + ip)
