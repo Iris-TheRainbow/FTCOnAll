@@ -55,7 +55,7 @@ class gradle:
 
     @staticmethod
     def run(sdkdir: str):
-        os.system('./gradlew build')
+        os.system('./gradlew --offline build')
         gradle.install(sdkdir)
 
     @staticmethod
@@ -77,9 +77,29 @@ class adb:
 class manual:
     @staticmethod
     def full():
-        print('placeholder for a full manual')
+        print('FTC For All v0.0.1')
+        print('Help:')
+        print('ftc setup: installs the necessary Android SDK for the FTC Robot Controller, as well as Platform Tools (adb)')
+        print('ftc init: creates local.properties for your FTC Robot Controller project')
+        print('ftc sync: downloads all the Gradle dependences for your project')
+        print('ftc run: builds and installs the RC app')
+        print('ftc build: builds the RC app but does not install. Good if \'ftc sync\' doesn\'t download dependencies and you need to install over wireless adb')
+        print('ftc install: installs the most recently build RC app')
+        print('ftc connect <chub/phone>: connects to either a REV Control Hub or an Android phone over Wi-Fi ADB')
 
     @staticmethod
     def single(command: str):
-        if command == 'setup'
-            print('placeholder')
+        if command == 'setup':
+            print('ftc setup: installs the necessary Android SDK for the FTC Robot Controller, as well as Platform Tools (adb)')
+        elif command == 'init':
+            print('ftc init: creates local.properties for your FTC Robot Controller project')
+        elif command == 'sync':
+            print('ftc sync: downloads all the Gradle dependences for your project')
+        elif command == 'run':
+            print('ftc run: builds and installs the RC app')
+        elif command == 'build':
+            print('ftc build: builds the RC app but does not install. Good if \'ftc sync\' doesn\'t download dependencies and you need to install over wireless adb')
+        elif command == 'install':
+            print('ftc install: installs the most recently build RC app')
+        elif command == 'connect':
+            print('ftc connect <chub/phone>: connects to either a REV Control Hub or an Android phone over Wi-Fi ADB')

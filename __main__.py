@@ -58,7 +58,7 @@ elif args[1] == 'init':
     scripts.gradle.init(sdkdir)
 elif args[1] == 'build':
     scripts.gradle.build()
-elif args[1] == 'run'
+elif args[1] == 'run':
     scripts.gradle.run(sdkdir)
 elif args[1] == 'install':
     scripts.gradle.install(sdkdir)
