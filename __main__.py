@@ -1,5 +1,5 @@
 import sys
-import scripts
+import scripts, manual
 import os
 
 args = sys.argv
@@ -8,17 +8,13 @@ prefix = os.path.expanduser('~')
 datadir = prefix + '/.ftcandroid/'
 confpath = datadir + 'ftcandroid.conf'
 defaultconfig = ['sdkdir=']
-
+version = 'v0.0.1'
 if os.path.exists(datadir):
-    print('data exists')
     if os.path.exists(confpath):
-        print('conf exists')
         with open(confpath, 'r') as f:
-            print('read sdk dir')
             try:
                 sdkdir = str(f.read().splitlines()[0]).removeprefix('sdkdir=')
                 os.environ['ANDROID_HOME'] = sdkdir
-
             except:
                 print('wrote default')
                 with open(confpath, 'w+') as fi:
@@ -32,7 +28,7 @@ else:
         f.writelines(defaultconfig)
 
 if len(args) <= 1:
-    scripts.manual.full()
+    manual.full(version)
     exit()
 
 if sdkdir == '' and args[1] != 'setup':
@@ -62,8 +58,17 @@ elif args[1] == 'run':
     scripts.gradle.run(sdkdir)
 elif args[1] == 'install':
     scripts.gradle.install(sdkdir)
-elif args[1] == 'help':
+elif args[1] == 'help' or args[1] == '--help' or args[1] == '-h':
     if len(args) <= 2:
-        scripts.manual.full()
+        manual.full(version)
     elif len(args) > 2:
-        scripts.manual.single(args[3])
+        manual.single(args[2])
+elif args[1] == '-v' or args[1] == '--version' or args[1] == 'version':
+    print('FTC On All ' + version)
+else:
+    command = ''
+    for i in range(len(args)):
+        command += args[i]
+        if i != len(args) - 1:
+            command += ' '
+    print('Command: \'' + command + '\' not found')
