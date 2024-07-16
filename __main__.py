@@ -26,20 +26,29 @@ else:
     os.mkdir(datadir)
     with open(confpath, 'w') as f:
         f.writelines(defaultconfig)
+def cmdNotFound(arg):
+    command = ''
+    for i in range(len(arg)):
+        command += arg[i]
+        if i != len(arg) - 1:
+            command += ' '
+    print('Command: \'' + command + '\' not found')
+manual = manual.help(cmdNotFound)
+
 
 if len(args) <= 1:
-    manual.full(version)
+    manual.full()
     exit()
-
-if sdkdir == '' and args[1] != 'setup':
-    print('Please configure a SDK with \'ftc setup\' or with \'ftc set sdkdir <dir>\'')
-    exit()
-if args[1] != 'setup' and args[1] != 'init' and not os.path.exists('local.properties'):
-    if not os.path.exists('gradlew'):
-        print('Please navigate to your FTC project and run \'ftc init\'')
-    else:
-        print('please run \'ftc init\' to finish setup')
-    exit()
+if not os.path.exists('testing'):
+    if sdkdir == '' and args[1] != 'setup':
+        print('Please configure a SDK with \'ftc setup\' or with \'ftc set sdkdir <dir>\'')
+        exit()
+    if args[1] != 'setup' and args[1] != 'init' and not os.path.exists('local.properties'):
+        if not os.path.exists('gradlew'):
+            print('Please navigate to your FTC project and run \'ftc init\'')
+        else:
+            print('please run \'ftc init\' to finish setup')
+        exit()
 
 if args[1] == 'setup':
     scripts.android.setup(confpath, datadir, sdkdir)
@@ -60,15 +69,10 @@ elif args[1] == 'install':
     scripts.gradle.install(sdkdir)
 elif args[1] == 'help' or args[1] == '--help' or args[1] == '-h':
     if len(args) <= 2:
-        manual.full(version)
+        manual.full()
     elif len(args) > 2:
         manual.single(args[2])
 elif args[1] == '-v' or args[1] == '--version' or args[1] == 'version':
     print('FTC On All ' + version)
 else:
-    command = ''
-    for i in range(len(args)):
-        command += args[i]
-        if i != len(args) - 1:
-            command += ' '
-    print('Command: \'' + command + '\' not found')
+    cmdNotFound(args)
