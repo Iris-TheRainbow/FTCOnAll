@@ -7,7 +7,7 @@ A simple program to allow you to build and install the FTCRobotController withou
 This maps essentially to what Android Studio does when you open a project for the first time
 
 
-`ftc init`: creates local.properties for your FTC Robot Controller project
+`ftc init`: creates `local.properties` for your FTC Robot Controller project
 This maps essentially to what Android Studio does when you open a project for the first time
 
 
