@@ -38,6 +38,8 @@ class gradle:
     @staticmethod
     def init(sdkdir: str):
         if os.path.exists('gradlew'):
+            if sys.platform.lower() == 'darwin' or sys.platform.lower() == 'linux':
+                os.system('sudo chmod +x gradlew')
             if not os.path.exists('local.properties'):
                 with open('local.properties', 'w') as f:
                     f.write('sdkdir=' + sdkdir)
