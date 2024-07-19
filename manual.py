@@ -1,3 +1,14 @@
+def argsToString(args):
+    try:
+        string = ''
+        for i in range(len(args)):
+            string += args[i]
+            if i+1 != len(args):
+                string += ' '
+    except AttributeError:
+        string = args
+    return string
+
 class commandhelp:
     def __init__(self, command, short, alt):
         self.command = command
@@ -26,19 +37,15 @@ class help:
         ]
         self.cmdnotfound = cmdnotfound
 
-    def full(self):
-        print('FTC For All v0.1.1')
+
+    def help(self, confpath: str, datadir: str, sdkdir: str, args):
+        name = argsToString(args)
+        alt = True
+        if name == '':
+            print('FTC For All v0.1.1')
+            alt = False
         for command in self.commands:
-            print(command[1].command + ': ' + command[1].short)
-
-    def single(self, name):
-        for command in self.commands:
-            if command[0] == name:
-                print(command[1].command + ': ' + command[1].short + '\n' + command[1].alt)
-                return
-
-
-
-name = help()
-
-name.full()
+            if name in command[0]:
+                print(command[1].command + ': ' + command[1].short)
+                if alt:
+                    print(command[1].alt)

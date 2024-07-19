@@ -3,21 +3,37 @@ import os
 import sys
 import sdkmanager
 
+def argsToString(args):
+    try:
+        string = ''
+        for i in range(len(args)):
+            string += args[i]
+            if i+1 != len(args):
+                string += ' '
+    except AttributeError:
+        string = args
+    return string
+
+def version(confpath: str, datadir: str, sdkdir: str, args):
+    print('FTC On All v0.1.0')
+
 class android:
     @staticmethod
-    def setsdkdir(confpath: str, sdkpath: str):
-        content = []
-        with open(confpath, 'r') as f:
-            content = f.read().splitlines()
-        with open(confpath, 'w+') as f:
-            content[0] = 'sdkdir=' + sdkpath
-            f.writelines(content)
+    def set(confpath: str, datadir: str, sdkdir: str, args):
+        if args[0] == 'sdkdir':
+            content = []
+            with open(confpath, 'r') as f:
+                content = f.read().splitlines()
+            with open(confpath, 'w+') as f:
+                content[0] = 'sdkdir=' + sdkdir
+                f.writelines(content)
 
     @staticmethod
-    def sdksetup(confpath: str, datadir: str):
+    def sdksetup(confpath: str, datadir: str, sdkdir: str, args):
         print('Setting SDK path')
         sdkdir = datadir + 'android_sdk'
-        android.setsdkdir(confpath, sdkdir)
+        args = ['sdkdir', sdkdir]
+        android.set(confpath, datadir, sdkdir, args)
         os.environ['ANDROID_HOME'] = sdkdir
 
         print('Installing Android SDK')
@@ -30,13 +46,13 @@ class android:
         sdkmanager.licenses()
 
     @staticmethod
-    def setup(confpath: str, datadir: str, sdkdir: str):
-        android.sdksetup(confpath, datadir)
-        gradle.init(sdkdir)
+    def setup(confpath: str, datadir: str, sdkdir: str, args):
+        android.sdksetup(confpath, datadir, sdkdir, args)
+        gradle.init(confpath, datadir, sdkdir, args)
 
 class gradle:
     @staticmethod
-    def init(sdkdir: str):
+    def init(confpath: str, datadir: str, sdkdir: str, args):
         if os.path.exists('gradlew'):
             if sys.platform.lower() == 'darwin' or sys.platform.lower() == 'linux':
                 os.system('sudo chmod +x gradlew')
@@ -47,31 +63,35 @@ class gradle:
             print('Please navigate to your FTC project and run \'ftc init\'')
 
     @staticmethod
-    def sync():
+    def sync(confpath: str, datadir: str, sdkdir: str, args):
         os.system('./gradlew --stop')
         os.system('./gradlew')
 
     @staticmethod
-    def build():
+    def build(confpath: str, datadir: str, sdkdir: str, args):
         os.system('./gradlew build')
 
     @staticmethod
-    def run(sdkdir: str):
+    def run(confpath: str, datadir: str, sdkdir: str, args):
         os.system('./gradlew --offline build')
-        gradle.install(sdkdir)
+        gradle.install(confpath, datadir, sdkdir, args)
 
     @staticmethod
-    def install(sdkdir: str):
+    def install(confpath: str, datadir: str, sdkdir: str, args):
         os.system(sdkdir + '/platform-tools/adb install TeamCode/build/outputs/apk/releases/TeamCode-release.apk')
         os.system(sdkdir + '/platform-tools/adb reboot')
 
 
 class adb:
     @staticmethod
-    def connect(device: str, sdkdir: str):
+    def connect(confpath: str, datadir: str, sdkdir: str, args):
+        device = args[0]
         ip = ''
         if device == 'chub':
             ip = '192.168.43.1'
-        else:
+        elif device == 'phone':
             ip = '192.168.48.1'
+        else:
+            print('device not found. Valid devices are \'chub\' or \'phone\'')
+            return
         os.system(sdkdir + '/platform-tools/adb connect ' + ip)
