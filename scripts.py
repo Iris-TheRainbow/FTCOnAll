@@ -15,7 +15,7 @@ def argsToString(args):
     return string
 
 def version(confpath: str, datadir: str, sdkdir: str, args):
-    print('FTC On All v0.1.0')
+    print('FTC On All v0.2.0')
 
 def sdkpathset(confpath: str, datadir: str, sdkdir: str, args):
     print(sdkdir)
