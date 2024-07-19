@@ -1,7 +1,7 @@
 # Maintainer: iris snazzsinclair@gmail.com
 pkgname=ftconall-git
 _pkgname=ftconall
-pkgver=0.2.0.r0.g43966d1
+pkgver=0.2.0.r1.g8622bd7
 pkgrel=1
 pkgdesc="A new way to program for FTC on any IDE and any OS"
 arch=('any')
