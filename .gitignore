@@ -4,3 +4,7 @@ build
 dist
 __main__.spec
 testing
+src
+src/*
+ftconall
+ftconall/*
