@@ -17,6 +17,13 @@ def argsToString(args):
 def version(confpath: str, datadir: str, sdkdir: str, args):
     print('FTC On All v0.1.0')
 
+def sdkpathset(confpath: str, datadir: str, sdkdir: str, args):
+    print(sdkdir)
+    return len(sdkdir) > 3
+
+def inited(confpath: str, datadir: str, sdkdir: str, args):
+    return os.path.exists('local.properties')
+
 class android:
     @staticmethod
     def set(confpath: str, datadir: str, sdkdir: str, args):
