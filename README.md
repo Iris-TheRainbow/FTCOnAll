@@ -32,3 +32,5 @@ This internally just runs adb connect 192.168.43.1/192.168.48.1 (depending on if
 
 
 `ftc help`: provides more verbose help about a command with `ftc help <command>`. If no command is given, it shows this page.
+
+![image](https://github.com/user-attachments/assets/def956a3-9797-476f-9cd1-ca54af1a4820)
