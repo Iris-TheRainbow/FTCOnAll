@@ -1,0 +1,2 @@
+Requests==2.32.3
+sdkmanager==0.6.7
